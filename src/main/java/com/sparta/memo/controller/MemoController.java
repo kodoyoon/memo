@@ -15,7 +15,7 @@ public class MemoController {
   private final MemoService memoService;
 
   public MemoController(MemoService memoService) {
-    this.memoService =memoService;
+    this.memoService = memoService;
   }
 
   @PostMapping("/memos")

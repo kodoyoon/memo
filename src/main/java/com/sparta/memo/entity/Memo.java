@@ -23,3 +23,4 @@ public class Memo {
     this.contents = requestDto.getContents();
   }
 }
+

@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 @Component
-public class MemoRepository { //memoRepository
+public class MemoRepository {
 
   private final JdbcTemplate jdbcTemplate;
 
@@ -24,11 +24,11 @@ public class MemoRepository { //memoRepository
   }
 
   public Memo save(Memo memo) {
-    //DB 저장
+    // DB 저장
     KeyHolder keyHolder = new GeneratedKeyHolder(); // 기본 키를 반환받기 위한 객체
 
     String sql = "INSERT INTO memo (username, contents) VALUES (?, ?)";
-    jdbcTemplate.update( con -> {
+    jdbcTemplate.update(con -> {
           PreparedStatement preparedStatement = con.prepareStatement(sql,
               Statement.RETURN_GENERATED_KEYS);
 
@@ -46,6 +46,7 @@ public class MemoRepository { //memoRepository
   }
 
   public List<MemoResponseDto> findAll() {
+    // DB 조회
     String sql = "SELECT * FROM memo";
 
     return jdbcTemplate.query(sql, new RowMapper<MemoResponseDto>() {
@@ -59,11 +60,12 @@ public class MemoRepository { //memoRepository
       }
     });
   }
+
   public void update(Long id, MemoRequestDto requestDto) {
     String sql = "UPDATE memo SET username = ?, contents = ? WHERE id = ?";
-    jdbcTemplate.update(sql, requestDto.getUsername(), requestDto.getContents(), id );
-
+    jdbcTemplate.update(sql, requestDto.getUsername(), requestDto.getContents(), id);
   }
+
   public void delete(Long id) {
     String sql = "DELETE FROM memo WHERE id = ?";
     jdbcTemplate.update(sql, id);
@@ -74,7 +76,7 @@ public class MemoRepository { //memoRepository
     String sql = "SELECT * FROM memo WHERE id = ?";
 
     return jdbcTemplate.query(sql, resultSet -> {
-      if(resultSet.next()) {
+      if (resultSet.next()) {
         Memo memo = new Memo();
         memo.setUsername(resultSet.getString("username"));
         memo.setContents(resultSet.getString("contents"));
@@ -84,6 +86,4 @@ public class MemoRepository { //memoRepository
       }
     }, id);
   }
-
-
 }
